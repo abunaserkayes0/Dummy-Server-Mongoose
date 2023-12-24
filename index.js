@@ -65,7 +65,7 @@ app.delete("/post/:id", async (req, res) => {
       res.status(404).json({ error: "Document not found" });
     }
     const result = await UserPostModel.findByIdAndDelete(doc);
-    res.status(200).json(result);
+    res.status(200).json({ message: "Successfully Deleted" }, result);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -75,6 +75,9 @@ app.put("/post/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const doc = await UserPostModel.findById(id);
+    if (!doc) {
+      res.status(404).json({ error: "Document not found" });
+    }
     const result = await UserPostModel.findByIdAndUpdate(doc, req.body);
     res.status(200).json(result);
   } catch (error) {
