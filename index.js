@@ -22,14 +22,14 @@ conn.on("error", () => {
   console.log("Connection is Exiting");
   process.exit();
 });
-
+// create New Post
 app.post("/create", async (req, res) => {
   try {
-    const { title, description,date } = req.body;
+    const { title, description, date } = req.body;
     const doc = new UserPostModel({
       title,
       description,
-      date
+      date,
     });
     const result = await doc.save();
     res.json(result);
@@ -37,6 +37,7 @@ app.post("/create", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// View All Posts
 app.get("/all", async (req, res) => {
   try {
     const doc = await UserPostModel.find();
@@ -45,6 +46,42 @@ app.get("/all", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// Find Unique Post By Id
+app.get("/post/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const doc = await UserPostModel.findById(id);
+    res.status(200).json(doc);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Delete Post By Specific Id
+app.delete("/post/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const doc = await UserPostModel.findById(id);
+    if (!doc) {
+      res.status(404).json({ error: "Document not found" });
+    }
+    const result = await UserPostModel.findByIdAndDelete(doc);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Update Post By Specific Id
+app.put("/post/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const doc = await UserPostModel.findById(id);
+    const result = await UserPostModel.findByIdAndUpdate(doc, req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Listing Port
 app.listen(port, () => {
   console.log(`Listening is Running...${port}`);
 });
