@@ -22,8 +22,9 @@ conn.on("error", () => {
 // create New Post
 app.post("/create", async (req, res) => {
   try {
-    const { title, description, date } = req.body;
+    const { username, title, description, date } = req.body;
     const doc = new UserPostModel({
+      username,
       title,
       description,
       date,

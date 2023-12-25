@@ -1,8 +1,15 @@
 const mongoose = require("mongoose");
 
 const UserPostSchema = new mongoose.Schema({
-  title: String,
-  description: String,
+  userName: {
+    type: String,
+  },
+  title: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
   date: {
     type: Date,
     get: function (date) {
