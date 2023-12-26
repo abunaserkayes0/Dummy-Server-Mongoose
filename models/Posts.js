@@ -12,8 +12,8 @@ const UserPostSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    get: function (date) {
-      return date.toLocalDateString();
+    set: function (value) {
+      return new Date(value);
     },
   },
 });
